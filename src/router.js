@@ -10,7 +10,7 @@
 
 	/*
 
-    sub.render takes an element to render into, and a path to match on.
+    sub.render() takes an element to render into, and a path to match on.
     If sub.path matches the front of the path argument, it renders itself
     into the element argument, then calls render on its children, with itself
     as the element to render into, and the path it was provided, without 
@@ -21,11 +21,10 @@
 	Nutmeg.sub = function(path) {
 		function result() {
 			eachArg(arguments, function(arg) {
-				arg.get().forEach(function(path) {
-					paths.push(path)
-				});
+                subs.push(arg);
 			});
 		}
+        result.subs = [];
 		result.path = path;
 		subfuncs.forEach(function(subfunc) {
 			result[subfunc[0]] = function() {
@@ -56,9 +55,24 @@
 		}];
 	});
 
-	if (func !== undefined) {
-
-    }
+    var subfuncs = modifiers.concat(
+        ["render", function(container, path) {
+            var v;
+            var subs = this.subs;
+            for (var key in subs) {
+                var sub = subs[key];
+                if (path.indexOf(sub.path) === 0) {
+                    var s = sub.render();
+                    if (this.view === undefined) {
+                        v = s;
+                    } else {v = this.view(s);}
+                    container(v);
+                    break;
+                }
+            }
+            return this.view;
+        }]
+    );
 })();
 
 /*
