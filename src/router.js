@@ -57,20 +57,20 @@
 
     var subfuncs = modifiers.concat(
         ["render", function(container, path) {
-            var v;
+            var view;
             var subs = this.subs;
             for (var key in subs) {
                 var sub = subs[key];
                 if (path.indexOf(sub.path) === 0) {
                     var s = sub.render();
                     if (this.view === undefined) {
-                        v = s;
-                    } else {v = this.view(s);}
-                    container(v);
+                        view = s;
+                    } else {view = this.view(s);}
+                    container(view);
                     break;
                 }
             }
-            return this.view;
+            return view;
         }]
     );
 })();
