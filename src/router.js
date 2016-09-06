@@ -1,24 +1,32 @@
-function NutmegRouter(func) {
-	var funcs = {};
-	function eachArg(args, f) {
-		for (var i = 0; i < args.length; i++) {
-			f(args[i]);
-		}
+(function(undefined) {
+
+	Nutmeg.router = function() {
+		Nutmeg.internal.eachInArr(arguments, function(sub) {
+            sub.render(document.body, '');
+		});
 	}
 
 	var loc = window.location.split('#')[1];
 
-	funcs.sub = function(name) {
-		this.paths = [];
+	/*
+
+    sub.render takes an element to render into, and a path to match on.
+    If sub.path matches the front of the path argument, it renders itself
+    into the element argument, then calls render on its children, with itself
+    as the element to render into, and the path it was provided, without 
+    sub.path at the front as the path.
+
+	*/
+
+	Nutmeg.sub = function(path) {
 		function result() {
-			this.name = name;
 			eachArg(arguments, function(arg) {
-				arg.get().forEach(function(child) {
-					paths.push(name + '/' + child);
-				})
+				arg.get().forEach(function(path) {
+					paths.push(path)
+				});
 			});
 		}
-
+		result.path = path;
 		subfuncs.forEach(function(subfunc) {
 			result[subfunc[0]] = function() {
 				subfunc[1].apply(result, arguments);
@@ -38,25 +46,20 @@ function NutmegRouter(func) {
 	    }, Math.ceil((transitionTime + 0.1) * 1000));
 	}
 
-	var subfuncs = [
-		["view", function() {
-			this.transition(view);
-		}],
-		["transition", function(view) {
-            
-		}],
-		["get", function() {
-
-		}],
-        ["path", function(path) {
-            this.path = path;
-        }]  
-	];
+	var modifiers = [
+		"view",
+		"transision",
+		"path"
+	].map(function(mod) {
+		return [mod, function(m) {
+			this[m] = m;
+		}];
+	});
 
 	if (func !== undefined) {
 
     }
-}
+})();
 
 /*
 router(
@@ -70,4 +73,4 @@ router(
 
 	)
 )
- */
+*/
