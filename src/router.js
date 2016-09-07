@@ -1,10 +1,20 @@
 (function(undefined) {
 
+    for (var key in Nutmeg)  {
+        eval('var ' + key + '=Nutmeg[key]');
+    }
+
 	var loc = window.location.href.split('#')[1] || '';
 	Nutmeg.router = function() {
-		Nutmeg.internal.eachInArr(arguments, function(sub) {
-            sub.render(Nutmeg.body(), loc);
-		});
+        var routes = arguments;
+        this.current = {
+            eval: function() {
+                internal.eachInArr(routes, function(sub) {
+                    sub.render(body(), loc);
+                });
+            }
+        }
+        this.current.eval();
 	}
 
 	/*
@@ -16,6 +26,13 @@
     sub.path at the front as the path.
 
 	*/
+
+    Nutmeg.goto = function() {
+        return div.apply(null, arguments)
+                   .onclick(function() {
+                       router.current.eval();
+                   })
+    }
 
 	Nutmeg.sub = function(path) {
 		function result() {
@@ -76,7 +93,7 @@
 /*
 router(
 	sub('projects')(
-		sub('Nutmeg')(
+		sub(')(
 			sub('Core').view(nutmegCore),
 			sub('Router').view(nutmegRouter)
 		)
