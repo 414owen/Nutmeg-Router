@@ -1,12 +1,11 @@
 (function(undefined) {
 
+	var loc = window.location.href.split('#')[1] || '';
 	Nutmeg.router = function() {
 		Nutmeg.internal.eachInArr(arguments, function(sub) {
-            sub.render(document.body, '');
+            sub.render(Nutmeg.body(), loc);
 		});
 	}
-
-	var loc = window.location.href.split('#')[1];
 
 	/*
 
@@ -21,14 +20,15 @@
 	Nutmeg.sub = function(path) {
 		function result() {
 			eachArg(arguments, function(arg) {
-                subs.push(arg);
+                result.subs.push(arg);
 			});
 		}
         result.subs = [];
-		result.path = path;
+		result.subpath = path;
 		subfuncs.forEach(function(subfunc) {
 			result[subfunc[0]] = function() {
 				subfunc[1].apply(result, arguments);
+                return result;
 			};
 		});
 
@@ -47,31 +47,29 @@
 
 	var modifiers = [
 		"view",
+        "fill",
 		"transision",
 		"path"
 	].map(function(mod) {
 		return [mod, function(m) {
-			this[m] = m;
+			this[mod] = m;
 		}];
 	});
 
     var subfuncs = modifiers.concat(
-        ["render", function(container, path) {
-            var view;
+        [["render", function(container, path) {
             var subs = this.subs;
-            for (var key in subs) {
-                var sub = subs[key];
-                if (path.indexOf(sub.path) === 0) {
-                    var s = sub.render();
-                    if (this.view === undefined) {
-                        view = s;
-                    } else {view = this.view(s);}
-                    container(view);
-                    break;
+            // index is 1 to skip slashes
+            if (path.indexOf(this.subpath) === 1) {
+                if (this.view !== undefined) {
+                    container(this.view);
                 }
+                var newLoc = path.split(this.subPath)[1];
+                subs.forEach(function(sub) {
+                    sub.render(this.fill, newLoc);
+                });
             }
-            return view;
-        }]
+        }]]
     );
 })();
 
