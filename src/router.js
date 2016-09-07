@@ -6,7 +6,7 @@
 		});
 	}
 
-	var loc = window.location.split('#')[1];
+	var loc = window.location.href.split('#')[1];
 
 	/*
 
