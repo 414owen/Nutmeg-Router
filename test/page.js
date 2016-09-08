@@ -3,7 +3,14 @@ window.onload = function() {
         eval('var ' + key + '=Nutmeg[key]');
     }
     router(
-        sub('test').view(div('Hello World!')),
-        sub('').view(div('Default Page'))
+        sub('test').view(
+            div('Hello World!')
+        ),
+        sub('').view(
+            div(
+                'Default Page', 
+                link('/test')(button('Go to another page'))
+            )
+        )
     )
 }

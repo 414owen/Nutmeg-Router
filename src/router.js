@@ -10,16 +10,18 @@
         }
     }
 
+    var subs;
+    function evalLoc() {
+        renderChildren(window.location.href.split('#')[1] || '',
+                       body.clear(), subs);
+    }
+
 	Nutmeg.router = function() {
-        var subs = arguments;
-        this.current = {
-            eval: function() {
-                renderChildren(window.location.href.split('#')[1] || '',
-                               body(), subs);
-            }
-        }
-        this.current.eval();
+        subs = arguments;
+        evalLoc();
 	}
+
+    Nutmeg.router.eval = evalLoc;
 
 	/*
 
@@ -31,12 +33,12 @@
 
 	*/
 
-    Nutmeg.goto = function(hashloc) {
-        return div.apply(null, arguments)
+    Nutmeg.link = function(hashloc) {
+        return div()
                    .onclick(function() {
-                       window.location.href = window.location.href.split('#') +
+                       window.location.href = window.location.href.split('#')[0] +
                                               '#' + hashloc;
-                       router.current.eval();
+                       evalLoc();
                    });
     }
 
@@ -60,8 +62,10 @@
             // index is 1, in order to skip slashes
             var match = path.indexOf(this.subpath) === 1 || path === this.subpath;
             if (match) {
-                if (this.view !== undefined) {
-                    container(this.view);
+                var view = this.view;
+                if (view !== undefined) {
+                    if (typeof(view) === 'function') {view = view();}
+                    container(view);
                 }
                 var newLoc = path.split(RegExp(this.subpath + '(.)'))[1];
                 var fill = this.fill || container;
