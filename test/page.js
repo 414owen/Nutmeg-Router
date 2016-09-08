@@ -4,13 +4,11 @@ window.onload = function() {
     }
     router(
         sub('test').view(
-            div('Hello World!')
+            div("Try using the browser's 'back' button")
         ),
         sub('').view(
-            div(
-                'Default Page', 
-                link('test')(button('Go to another page'))
-            )
+            'Default Page', 
+            link('test')(button('Go to another page'))
         )
     )
 }

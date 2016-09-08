@@ -44,8 +44,7 @@
 	*/
 
     Nutmeg.link = function(hashloc) {
-        return div()
-                   .onclick(function() {
+        return div().onclick(function() {
                        window.history.pushState(hashloc, '', '#/' + hashloc);
                        evalLoc();
                    });
@@ -82,6 +81,12 @@
             }
             return match;
         };
+
+        result.view = function() {
+            this.view = arguments;
+            return result;
+        }
+
 		return result;
 	};
 
@@ -96,30 +101,12 @@
 	}
 
 	var modifiers = [
-		"view",
         "fill",
-		"transision",
-		"path"
+		"transision"
 	].map(function(mod) {
 		return [mod, function(m) {
 			this[mod] = m;
 		}];
 	});
 
-    var subfuncs = modifiers.concat(
-            );
 })();
-
-/*
-router(
-	sub('projects')(
-		sub('Nutmeg')(
-			sub('Core').view(nutmegCore),
-			sub('Router').view(nutmegRouter)
-		)
-	),
-	sub('about')(
-
-	)
-)
-*/
