@@ -4,14 +4,18 @@
         eval('var ' + key + '=Nutmeg[key]');
     }
 
-	var loc = window.location.href.split('#')[1] || '';
+    function renderChildren(route, container, children) {
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].render(container, route)) {break;}
+        }
+    }
+
 	Nutmeg.router = function() {
-        var routes = arguments;
+        var subs = arguments;
         this.current = {
             eval: function() {
-                internal.eachInArr(routes, function(sub) {
-                    sub.render(body(), loc);
-                });
+                renderChildren(window.location.href.split('#')[1] || '',
+                               body(), subs);
             }
         }
         this.current.eval();
@@ -27,11 +31,13 @@
 
 	*/
 
-    Nutmeg.goto = function() {
+    Nutmeg.goto = function(hashloc) {
         return div.apply(null, arguments)
                    .onclick(function() {
+                       window.location.href = window.location.href.split('#') +
+                                              '#' + hashloc;
                        router.current.eval();
-                   })
+                   });
     }
 
 	Nutmeg.sub = function(path) {
@@ -42,13 +48,27 @@
 		}
         result.subs = [];
 		result.subpath = path;
-		subfuncs.forEach(function(subfunc) {
+		modifiers.forEach(function(subfunc) {
 			result[subfunc[0]] = function() {
 				subfunc[1].apply(result, arguments);
                 return result;
 			};
 		});
-
+        
+        result.render = function(container, path) {
+            var subs = this.subs;
+            // index is 1, in order to skip slashes
+            var match = path.indexOf(this.subpath) === 1 || path === this.subpath;
+            if (match) {
+                if (this.view !== undefined) {
+                    container(this.view);
+                }
+                var newLoc = path.split(RegExp(this.subpath + '(.)'))[1];
+                var fill = this.fill || container;
+                renderChildren(newLoc, fill, subs);
+            }
+            return match;
+        };
 		return result;
 	};
 
@@ -74,26 +94,13 @@
 	});
 
     var subfuncs = modifiers.concat(
-        [["render", function(container, path) {
-            var subs = this.subs;
-            // index is 1 to skip slashes
-            if (path.indexOf(this.subpath) === 1) {
-                if (this.view !== undefined) {
-                    container(this.view);
-                }
-                var newLoc = path.split(this.subPath)[1];
-                subs.forEach(function(sub) {
-                    sub.render(this.fill, newLoc);
-                });
-            }
-        }]]
-    );
+            );
 })();
 
 /*
 router(
 	sub('projects')(
-		sub(')(
+		sub('Nutmeg')(
 			sub('Core').view(nutmegCore),
 			sub('Router').view(nutmegRouter)
 		)
