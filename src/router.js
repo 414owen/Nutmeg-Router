@@ -16,6 +16,16 @@
                        body.clear(), subs);
     }
 
+    window.onpopstate = function(st) {
+        evalLoc();
+    }
+
+    var oldback = window.history.back;
+    window.history.back = function() {
+        oldback();
+        evalLoc();
+    }
+
 	Nutmeg.router = function() {
         subs = arguments;
         evalLoc();
@@ -36,8 +46,7 @@
     Nutmeg.link = function(hashloc) {
         return div()
                    .onclick(function() {
-                       window.location.href = window.location.href.split('#')[0] +
-                                              '#' + hashloc;
+                       window.history.pushState(hashloc, '', '#/' + hashloc);
                        evalLoc();
                    });
     }

@@ -9,7 +9,7 @@ window.onload = function() {
         sub('').view(
             div(
                 'Default Page', 
-                link('/test')(button('Go to another page'))
+                link('test')(button('Go to another page'))
             )
         )
     )
