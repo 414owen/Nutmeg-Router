@@ -1,7 +1,9 @@
 (function(undefined) {
 
-    for (var key in Nutmeg)  {
-        eval('var ' + key + '=Nutmeg[key]');
+    var N = Nutmeg;
+
+    for (var key in N)  {
+        eval('var ' + key + '=N[key]');
     }
 
     function renderChildren(route, container, children) {
@@ -10,30 +12,31 @@
         }
     }
 
-    var subs;
-    function evalLoc() {
-        renderChildren(window.location.href.split('#')[1] || '',
-                       body.clear(), subs);
-    }
-
     window.onpopstate = function(st) {
         evalLoc();
     }
 
-    var oldback = window.history.back;
-    window.history.back = function() {
-        oldback();
+    var R = N.router = function() {
+        subs = arguments;
         evalLoc();
     }
 
-	Nutmeg.router = function() {
-        subs = arguments;
-        evalLoc();
-	}
+    function evalLoc() {
+        R.go(window.location.href.split('#')[1] || '');
+    }
 
-    Nutmeg.router.eval = evalLoc;
+    R.eval = evalLoc;
+    
+    var URLvars;
+    R.go = function(loc) {
+        if (loc === '') {
+            loc = '/';
+        }
+        URLvars = {};
+        renderChildren(loc, body.clear(), subs);
+    }
 
-	/*
+    /*
 
     sub.render() takes an element to render into, and a path to match on.
     If sub.path matches the front of the path argument, it renders itself
@@ -41,72 +44,79 @@
     as the element to render into, and the path it was provided, without 
     sub.path at the front as the path.
 
-	*/
+    */
 
-    Nutmeg.link = function(hashloc) {
+    N.link = function(hashloc) {
         return div().onclick(function() {
-                       window.history.pushState(hashloc, '', '#/' + hashloc);
-                       evalLoc();
-                   });
+            var loc = hashloc.length === 0 ? window.location.href.split('#')[0] : '#/' + hashloc;
+            window.history.pushState(hashloc, '', loc);
+            evalLoc();
+        });
     }
 
-	Nutmeg.sub = function(path) {
-		function result() {
-			eachArg(arguments, function(arg) {
+    N.sub = function(path) {
+        function result() {
+            eachArg(arguments, function(arg) {
                 result.subs.push(arg);
-			});
-		}
+            });
+        }
         result.subs = [];
-		result.subpath = path;
-		modifiers.forEach(function(subfunc) {
-			result[subfunc[0]] = function() {
-				subfunc[1].apply(result, arguments);
+        result.subpath = path;
+        modifiers.forEach(function(subfunc) {
+            result[subfunc[0]] = function() {
+                subfunc[1].apply(result, arguments);
                 return result;
-			};
-		});
+            };
+        });
         
         result.render = function(container, path) {
             var subs = this.subs;
-            // index is 1, in order to skip slashes
-            var match = path.indexOf(this.subpath) === 1 || path === this.subpath;
-            if (match) {
+            var match = false;
+            var matched = function(newpath) {
+                match = true;
                 var view = this.view;
                 if (view !== undefined) {
-                    if (typeof(view) === 'function') {view = view();}
+                    if (typeof(view) === 'function') {view = view(URLvars);}
                     container(view);
                 }
                 var newLoc = path.split(RegExp(this.subpath + '(.)'))[1];
                 var fill = this.fill || container;
                 renderChildren(newLoc, fill, subs);
-            }
+            }.bind(this);
+
+            var part = path.split('/')[1];
+            var rest = path.slice(part.length + 1);
+            if (path.indexOf(this.subpath) === 1) {
+                matched(rest);
+            } else if (this.subpath[0] === ':') {
+                // Take out ':' and save variable
+                URLvars[this.subpath.slice(1)] = part;
+                matched(rest);
+            }       
             return match;
         };
 
-        result.view = function() {
-            this.view = arguments;
-            return result;
-        }
+        return result;
+    };
 
-		return result;
-	};
+    function pageChange(newPage) {
+        var bod = body();
+        bod.style({backgroundColor: foreground});
+        window.setTimeout(function() {
+            bod.clear();
+            bod(newPage);
+            bod.style({backgroundColor: background});
+        }, Math.ceil((transitionTime + 0.1) * 1000));
+    }
 
-	function pageChange(newPage) {
-	    var bod = body();
-	    bod.style({backgroundColor: foreground});
-	    window.setTimeout(function() {
-	        bod.clear();
-	        bod(newPage);
-	        bod.style({backgroundColor: background});
-	    }, Math.ceil((transitionTime + 0.1) * 1000));
-	}
-
-	var modifiers = [
+    var modifiers = [
         "fill",
-		"transision"
-	].map(function(mod) {
-		return [mod, function(m) {
-			this[mod] = m;
-		}];
-	});
+        "transision",
+        "view"
+    ].map(function(mod) {
+        return [mod, function(m) {
+            this[mod] = m;
+        }];
+    });
 
 })();
