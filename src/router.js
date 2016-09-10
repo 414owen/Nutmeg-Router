@@ -12,11 +12,10 @@
         }
     }
 
-    window.onpopstate = function(st) {
-        evalLoc();
-    }
-
     var R = N.router = function() {
+        window.onpopstate = function(st) {
+            evalLoc();
+        };
         subs = arguments;
         evalLoc();
     }
@@ -34,7 +33,7 @@
         }
         URLvars = {};
         renderChildren(loc, body.clear(), subs);
-    }
+    };
 
     /*
 
@@ -52,7 +51,7 @@
             window.history.pushState(hashloc, '', loc);
             evalLoc();
         });
-    }
+    };
 
     N.sub = function(path) {
         function result() {
@@ -86,13 +85,19 @@
 
             var part = path.split('/')[1];
             var rest = path.slice(part.length + 1);
-            if (path.indexOf(this.subpath) === 1) {
-                matched(rest);
-            } else if (this.subpath[0] === ':') {
-                // Take out ':' and save variable
-                URLvars[this.subpath.slice(1)] = part;
-                matched(rest);
-            }       
+            debugger;
+            if (this.subpath === undefined) {
+                matched(path);
+            } else {
+                index = path.indexOf(this.subpath);
+                if (this.subpath === '' && path === '' || this.subpath === part) {
+                    matched(rest);
+                } else if (this.subpath[0] === ':') {
+                    // Take out ':' and save variable
+                    URLvars[this.subpath.slice(1)] = part;
+                    matched(rest);
+                }
+            }
             return match;
         };
 
@@ -118,5 +123,4 @@
             this[mod] = m;
         }];
     });
-
 })();
