@@ -152,11 +152,25 @@ params used to get to the path are the keys to their values in the URL.
 
 ### View
 
-View is the element to be rendered, it can either be a nutmeg element,
-or a function that returns a nutmeg element. If it's a function, it is 
-passed an object with all the URL variables accumulated to date.
+The view is the element to be rendered, it can either be a nutmeg
+element,  or a function that returns a nutmeg element. If it's a
+function, it is  passed an object with all the URL variables accumulated
+to get up to that  sub.  
 
 ### Transitions
 
-Nutmeg supports transitions between subs. A transition is a function,
-so it's easy to define your own. 
+Nutmeg supports transitions between subs. A transition is a function, so
+it's easy to define your own. The transition function is passed in the
+container and the new view. Here is an example of a transition function
+I used on [414owen.github.io](414owen.github.io):
+
+
+```js
+function pageChange(container, newPage) {
+    var bod = body();
+    bod.style({backgroundColor: foreground});
+    window.setTimeout(function() {
+        bod.clear().style(style.body)(newPage);
+    }, pageChangeTime);
+}
+```
