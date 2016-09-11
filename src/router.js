@@ -1,3 +1,17 @@
+/**
+ * @license
+ * Copyright (c) 2016 Owen Shepherd
+ * This software is open-source under the MIT license.
+ * The full license can be viewed here: https://opensource.org/licenses/MIT
+ */
+
+ /**
+  * @preserve
+  * This is Nutmeg-Router. a tiny client-side URL parser
+  * and Nutmeg element renderer.
+  * Homepage: https://github.com/414owen/Nutmeg-Router
+  */
+
 (function(undefined) {
     var N = Nutmeg;
 
