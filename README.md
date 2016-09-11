@@ -2,11 +2,11 @@
 
 ## How it works:  
 
-Nutmeg is an alternative markup... Style, I guess?  
-That's cool, but if you want to develop a functioning multi-page app  you have  
-two options; either create a new Nutmeg script to represent every page of your  
-site, with some shared scripts or whatever, or have some fancy single-page-app  
-foo going on. 
+Nutmeg is an alternative markup... Style, I guess?  That's cool, but if  
+you want to develop a functioning multi-page app  you have  two options;  
+either create a new Nutmeg script to represent every page of your  site,  
+with some shared scripts or whatever, or have some fancy single-page-app  
+foo going on.   
 
 Nutmeg-Router provides the following fancy single-page-app foo:
 
@@ -35,7 +35,7 @@ Here are some reasons to not use Nutmeg-Router:
 
 ### A Basic Example
 
-In this basic example, we assume you hava the domain name 'nutmeg-rocks.com'.
+In this basic example, we assume you hava the domain name 'nutmeg-rocks.com'.  
 When a 'sub' matches, it renders the view provided on page.
 
 ```js
@@ -84,14 +84,14 @@ router(
 
 ### router()
 
-router() is the base function for defining a URL routing scheme.
-It will set up your page so that browser history is managed for
+router() is the base function for defining a URL routing scheme.  
+It will set up your page so that browser history is managed for  
 you, and start evaluating subfolders ('sub').
 
 ### sub()
 
-sub() is the way of defining a (virtual) subdirectory in your domain 
-scheme. It takes one parameter, a string, which matches a part of the 
+sub() is the way of defining a (virtual) subdirectory in your domain   
+scheme. It takes one parameter, a string, which matches a part of the   
 URL.
 
 ### Matching
