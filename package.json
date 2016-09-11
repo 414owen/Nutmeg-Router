@@ -4,7 +4,8 @@
   "description": "Simple URL Router for the Nutmeg website generator",
   "main": "src/router.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp "
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/414owen/Nutmeg-Router#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.2",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
     "uglify-js": "^2.7.0"
