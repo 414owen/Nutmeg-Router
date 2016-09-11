@@ -3,12 +3,12 @@
 ## How it works:  
 
 Nutmeg is an alternative markup... Style, I guess?  
-That's cool, but if you want to develop a functioning multi-page app  
-you have two options; either create a new Nutmeg script to represent  
-every page of your site, with some shared scripts or whatever, or  
-have some fancy one-page-app thing going on. 
+That's cool, but if you want to develop a functioning multi-page app  you have  
+two options; either create a new Nutmeg script to represent every page of your  
+site, with some shared scripts or whatever, or have some fancy one-page-app  
+foo going on. 
 
-Nutmeg-Router provides the following fancy one-page-app things:
+Nutmeg-Router provides the following fancy one-page-app foo:
 
 * Url Routing
 * Browser history handling
@@ -19,7 +19,7 @@ Here are some reasons you should use Nutmeg-Router:
 * Navigating pages:
   * Requires no network access
   * Is instantaneous
-  * Can have fancy transitions
+  * Supports fancy page transitions
 * Your server:
   * Serves less files
 * Your code:

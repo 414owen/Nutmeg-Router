@@ -12,13 +12,13 @@
         }
     }
 
-    var R = N.router = function() {
+	var R = N.router = function() {
         window.onpopstate = function(st) {
             evalLoc();
         };
         subs = arguments;
         evalLoc();
-    }
+	}
 
     function evalLoc() {
         R.go(window.location.href.split('#')[1] || '');
@@ -35,7 +35,7 @@
         renderChildren(loc, body.clear(), subs);
     };
 
-    /*
+	/*
 
     sub.render() takes an element to render into, and a path to match on.
     If sub.path matches the front of the path argument, it renders itself
@@ -43,7 +43,7 @@
     as the element to render into, and the path it was provided, without 
     sub.path at the front as the path.
 
-    */
+	*/
 
     N.link = function(hashloc) {
         return div().onclick(function() {
@@ -53,20 +53,20 @@
         });
     };
 
-    N.sub = function(path) {
-        function result() {
-            eachArg(arguments, function(arg) {
+	N.sub = function(path) {
+		function result() {
+			eachArg(arguments, function(arg) {
                 result.subs.push(arg);
-            });
-        }
+			});
+		}
         result.subs = [];
-        result.subpath = path;
-        modifiers.forEach(function(subfunc) {
-            result[subfunc[0]] = function() {
-                subfunc[1].apply(result, arguments);
+		result.subpath = path;
+		modifiers.forEach(function(subfunc) {
+			result[subfunc[0]] = function() {
+				subfunc[1].apply(result, arguments);
                 return result;
-            };
-        });
+			};
+		});
         
         result.render = function(container, path) {
             var subs = this.subs;
@@ -101,26 +101,26 @@
             return match;
         };
 
-        return result;
-    };
+		return result;
+	};
 
-    function pageChange(newPage) {
-        var bod = body();
-        bod.style({backgroundColor: foreground});
-        window.setTimeout(function() {
-            bod.clear();
-            bod(newPage);
-            bod.style({backgroundColor: background});
-        }, Math.ceil((transitionTime + 0.1) * 1000));
-    }
+	function pageChange(newPage) {
+	    var bod = body();
+	    bod.style({backgroundColor: foreground});
+	    window.setTimeout(function() {
+	        bod.clear();
+	        bod(newPage);
+	        bod.style({backgroundColor: background});
+	    }, Math.ceil((transitionTime + 0.1) * 1000));
+	}
 
-    var modifiers = [
+	var modifiers = [
         "fill",
-        "transision",
+		"transision",
         "view"
-    ].map(function(mod) {
-        return [mod, function(m) {
-            this[mod] = m;
-        }];
-    });
+	].map(function(mod) {
+		return [mod, function(m) {
+			this[mod] = m;
+		}];
+	});
 })();
