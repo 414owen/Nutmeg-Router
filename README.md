@@ -76,6 +76,7 @@ router(
 
   sub('aboutMe')
 );
+```
 
 ## Some explanations
 
