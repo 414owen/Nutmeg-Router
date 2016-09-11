@@ -41,14 +41,14 @@ When a 'sub' matches, it renders the view provided on page.
 ```js
 router(
 
-  // Matches nutmeg-rocks.com/#/projects
-	sub('projects').view(my-projects-page),
+    // Matches nutmeg-rocks.com/#/projects
+    sub('projects').view(my-projects-page),
 
-  // Matches nutmeg-rocks.com/#/about-me
-	sub('about-me').view(about-me-page),
+    // Matches nutmeg-rocks.com/#/about-me
+    sub('about-me').view(about-me-page),
 
-	// Matches everything else, including nothing
-	sub('').view(landing-page)
+    // Matches everything else, including nothing
+    sub('').view(landing-page)
 
 );
 ```
