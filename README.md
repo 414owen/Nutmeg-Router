@@ -58,23 +58,25 @@ router(
 ```js
 router(
 
-  // Matches /projects and renders the base page
-  sub('projects').view(projects).fill(elem)(
+    // Matches /projects and renders the base page
+    sub('projects').view(projects).fill(elem)(
 
-    // Matches /projects/Nutmeg and renders project-specific stuff into elem
-    sub('Nutmeg').view(nutmeg-project),
+        // Matches /projects/Nutmeg and renders project-specific stuff into elem
+        sub('Nutmeg').view(nutmeg-project),
 
-    // Matches /projects/LSystems and does the same as above
-    sub('LSystems').view(l-systems-project)
-  ),
+        // Matches /projects/LSystems and transitions to 'l-systems-project'
+        // using the 'fancyass' transition.
+        sub('LSystems').view(l-systems-project).transition(fancyass)
+    ),
 
-  sub('greetMe')(
-    // Matches /greetMe/*anything* and passes the value of anything to greetName,
-    // if greetName is a function
-    sub(':name').view(greetName)
-  )
+    sub('greetMe')(
 
-  sub('aboutMe')
+        // Matches /greetMe/*anything* and passes the value of anything to greetName,
+        // if greetName is a function
+        sub(':name').view(greetName)
+    )
+
+    sub('aboutMe')
 );
 ```
 
@@ -104,7 +106,7 @@ we could define:
 
 ```js
 router(
-  sub('projects').view(page)
+    sub('projects').view(page)
 )
 ```
 
@@ -114,7 +116,7 @@ Which would match nutmeg-rocks.com/#/projects, and render `page` on-screen.
 
 ```js
 router(
-  sub('').view(whatever)
+    sub('').view(whatever)
 )
 
 This will only match the root of the current subpath, ie: nutmeg-rocks.com
@@ -123,7 +125,7 @@ This will only match the root of the current subpath, ie: nutmeg-rocks.com
 
 ```js
 render(
-  sub().view(genericpage)
+    sub().view(genericpage)
 )
 ```
 
@@ -133,16 +135,23 @@ Matches Anything whatsoever in the current subpath.
 
 ```js
 render(
-  sub(':name').view(greeter)
+    sub(':name').view(greeter)
 )
 ```
 
-This matches anything, and passes the value of url part into greeter, 
-provided greeter is a function.
+This matches anything, and passes the value of the url part into greeter, 
+provided greeter is a function. For example, if we visit
+`nutmeg-rocks.com/#/owen`, greeter() will be passed in this object:
+
+```js
+{ name: "owen" }
+```
 
 ### View
 
 View is the element to be rendered, it can either be a nutmeg element,
 or a function that returns a nutmeg element. If it's a function, it is 
 passed an object with all the URL variables accumulated to date.
+
+Say we have this routing scheme:
 
