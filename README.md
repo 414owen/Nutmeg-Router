@@ -5,10 +5,10 @@
 Nutmeg is an alternative markup... Style, I guess?  
 That's cool, but if you want to develop a functioning multi-page app  you have  
 two options; either create a new Nutmeg script to represent every page of your  
-site, with some shared scripts or whatever, or have some fancy one-page-app  
+site, with some shared scripts or whatever, or have some fancy single-page-app  
 foo going on. 
 
-Nutmeg-Router provides the following fancy one-page-app foo:
+Nutmeg-Router provides the following fancy single-page-app foo:
 
 * Url Routing
 * Browser history handling
@@ -147,11 +147,16 @@ provided greeter is a function. For example, if we visit
 { name: "owen" }
 ```
 
+More formally, the function gets passes an object where all defined URL
+params used to get to the path are the keys to their values in the URL.
+
 ### View
 
 View is the element to be rendered, it can either be a nutmeg element,
 or a function that returns a nutmeg element. If it's a function, it is 
 passed an object with all the URL variables accumulated to date.
 
-Say we have this routing scheme:
+### Transitions
 
+Nutmeg supports transitions between subs. A transition is a function,
+so it's easy to define your own. 
