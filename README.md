@@ -35,8 +35,9 @@ Here are some reasons to not use Nutmeg-Router:
 
 ### A Basic Example
 
-In this basic example, we assume you hava the domain name 'nutmeg-rocks.com'.  
-When a 'sub' matches, it renders the view provided on page.
+In this basic example, we assume you hava the domain name  
+'nutmeg-rocks.com'.  When a 'sub' matches, it renders the view provided  
+on page.
 
 ```js
 router(
