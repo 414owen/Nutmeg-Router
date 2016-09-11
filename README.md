@@ -119,6 +119,7 @@ Which would match nutmeg-rocks.com/#/projects, and render `page` on-screen.
 router(
     sub('').view(whatever)
 )
+```
 
 This will only match the root of the current subpath, ie: nutmeg-rocks.com
 
