@@ -15,7 +15,7 @@ gulp.task('uglify-compiler', function() {
 		.pipe(uglify({
        preserveComments:'some'
      }))
-		.pipe(rename('Router-U.js'))
+		.pipe(rename('router.min.js'))
 		.pipe(gulp.dest(DEST));
 });
 
