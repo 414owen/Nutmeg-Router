@@ -1,5 +1,4 @@
 (function(undefined) {
-
     var N = Nutmeg;
 
     for (var key in N)  {
@@ -13,6 +12,7 @@
     }
 
 	var R = N.router = function() {
+        body.clear();
         window.onpopstate = function(st) {
             evalLoc();
         };
@@ -32,7 +32,7 @@
             loc = '/';
         }
         URLvars = {};
-        renderChildren(loc, body.clear(), subs);
+        renderChildren(loc, body(), subs);
     };
 
 	/*
@@ -74,9 +74,14 @@
             var matched = function(newpath) {
                 match = true;
                 var view = this.view;
+                var transition = this.transition;
                 if (view !== undefined) {
                     if (typeof(view) === 'function') {view = view(URLvars);}
-                    container(view);
+                    if (transition !== undefined) {
+                        transition(container, view);
+                    } else {
+                        container(view);
+                    }
                 }
                 var newLoc = path.split(RegExp(this.subpath + '(.)'))[1];
                 var fill = this.fill || container;
@@ -84,11 +89,10 @@
             }.bind(this);
 
             var part = path.split('/')[1];
-            var rest = path.slice(part.length + 1);
-            debugger;
             if (this.subpath === undefined) {
                 matched(path);
             } else {
+                var rest = path.slice(part.length + 1);
                 index = path.indexOf(this.subpath);
                 if (this.subpath === '' && path === '' || this.subpath === part) {
                     matched(rest);
@@ -104,19 +108,9 @@
 		return result;
 	};
 
-	function pageChange(newPage) {
-	    var bod = body();
-	    bod.style({backgroundColor: foreground});
-	    window.setTimeout(function() {
-	        bod.clear();
-	        bod(newPage);
-	        bod.style({backgroundColor: background});
-	    }, Math.ceil((transitionTime + 0.1) * 1000));
-	}
-
 	var modifiers = [
         "fill",
-		"transision",
+		"transition",
         "view"
 	].map(function(mod) {
 		return [mod, function(m) {
