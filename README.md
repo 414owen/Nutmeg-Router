@@ -96,12 +96,12 @@ URL.
 
 ### Matching
 
-For all examples we will use the domain nutmeg-rocks.com.
+For all examples we will use the domain nutmeg-rocks.com.  
 There are four types of matching:
 
 #### Specified Match
 
-This is where you type in the literal of a path segment, for example,
+This is where you type in the literal of a path segment, for example,  
 we could define:
 
 ```js
@@ -139,29 +139,29 @@ render(
 )
 ```
 
-This matches anything, and passes the value of the url part into greeter, 
-provided greeter is a function. For example, if we visit
+This matches anything, and passes the value of the url part into greeter,   
+provided greeter is a function. For example, if we visit  
 `nutmeg-rocks.com/#/owen`, greeter() will be passed in this object:
 
 ```js
 { name: "owen" }
 ```
 
-More formally, the function gets passes an object where all defined URL
+More formally, the function gets passes an object where all defined URL  
 params used to get to the path are the keys to their values in the URL.
 
 ### View
 
-The view is the element to be rendered, it can either be a nutmeg
-element,  or a function that returns a nutmeg element. If it's a
-function, it is  passed an object with all the URL variables accumulated
+The view is the element to be rendered, it can either be a nutmeg  
+element,  or a function that returns a nutmeg element. If it's a  
+function, it is  passed an object with all the URL variables accumulated  
 to get up to that  sub.  
 
 ### Transitions
 
-Nutmeg supports transitions between subs. A transition is a function, so
-it's easy to define your own. The transition function is passed in the
-container and the new view. Here is an example of a transition function
+Nutmeg supports transitions between subs. A transition is a function, so  
+it's easy to define your own. The transition function is passed in the  
+container and the new view. Here is an example of a transition function  
 I used on [414owen.github.io](414owen.github.io):
 
 
