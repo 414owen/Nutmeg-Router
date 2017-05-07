@@ -1,6 +1,24 @@
 # Nutmeg-Router
 
-## How it works:
+- [Introduction](#introduction)
+- [What does it look like](#what-does-it-look-like)
+  - [A Basic Example](#a-basic-example)
+  - [A More Advanced Example](#a-more-advanced-example)
+- [Some explanations](#some-explanations)
+  - [router()](#router)
+  - [sub()](#sub)
+  - [Matching](#matching)
+    - [Specified Match](#specified-match)
+    - [Empty String Match](#empty-string-match)
+    - [Unconditional Match](#unconditional-match)
+    - [Variable Match](#variable-match)
+  - [Nesting](#nesting)
+  - [View](#view)
+  - [Changing Pages](#changing-pages)
+  - [Transitions](#transitions)
+  - [Router Options](#router-options)
+
+## Introduction
 
 Nutmeg is an alternative markup... Style, I guess? That's cool, but if you  
 want to develop a functioning multi-page app? You have two options, either  
