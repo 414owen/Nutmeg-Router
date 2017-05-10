@@ -100,7 +100,12 @@
 		}
 
 		if (options.universal) {
-			linkFn = function(to) {return div.onclick(pushUrl.bind(null, to));};
+			linkFn = function(to) {
+				return a.href(to).onclick(function(e) {
+					e.preventDefault();
+					pushUrl(to);
+				});
+			};
 			pushUrlFn = pushUrl;
 			window.onpopstate = more.run;
 		}
