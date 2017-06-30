@@ -62,10 +62,17 @@
 		};
 
 		function more(opts) {
-			if (typeof(opts) === "object") {
+			if (typeof(opts) === "object" && !opts.length) {
 				for (var key in opts) {options[key] = opts[key];}
 			} else {
-				subs = subs.concat([].slice.call(arguments));
+				for (var i = 0; i < arguments.length; i++) {
+					var arg = arguments[i];
+					if (arg.length) {
+						more.apply(null, arg);
+					} else {
+						subs.push(arg);
+					}
+				}
 			}
 			return more;
 		}
